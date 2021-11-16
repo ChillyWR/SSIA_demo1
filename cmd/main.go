@@ -1,6 +1,6 @@
 package main
 
-import(
+import (
 	"github.com/ChillyWR/SSIA_demo1/iternal"
 )
 
@@ -154,7 +154,7 @@ func main() {
 //	shuffle = true
 //}
 //
-//// TODO: cobra + git
+//// TODO: cobra
 //func main() {
 //	argsHandler()
 //	quiz := createQuiz(defaultFileName, shuffle)
