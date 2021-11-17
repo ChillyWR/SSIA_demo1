@@ -6,7 +6,6 @@ import (
 	"github.com/ChillyWR/SSIA_demo1/pkg"
 	"math/rand"
 	"os"
-	"strings"
 	"time"
 )
 
@@ -27,7 +26,7 @@ const (
 
 var (
 	InputFileName = "problems.json"
-	TimeForQuiz   = 30    // in seconds
+	TimeForQuiz   = 30 // in seconds
 	Shuffle       = false
 )
 
@@ -57,6 +56,7 @@ func (q *Quiz) StartQuiz() {
 	q.askQuestions()
 }
 
+// Simple shuffle
 func (q *Quiz) shuffleQuiz() {
 	rand.Seed(time.Now().UnixNano())
 	rand.Shuffle(len(q.qa),
@@ -77,19 +77,16 @@ func (q *Quiz) askQuestions() {
 			fmt.Println(err)
 			return
 		}
-		q.parseInput(input, q.qa[i].Answer)
+		if pkg.CompareStrings(input, q.qa[i].Answer) {
+			q.correctAnswersAmount++
+		}
 	}
 	q.printResult()
 }
 
-// String trimming and cleanup
-func (q *Quiz) parseInput(input, answer string) {
-	input = strings.Join(strings.Fields(input), " ")
-	if strings.ToLower(input) == strings.ToLower(answer) {
-		q.correctAnswersAmount++
-	}
-}
-
+// Start timer
+// Preferred to run in different go routine
+// Shut down program when timer is up
 func (q Quiz) startTimer() {
 	timer := time.NewTimer(time.Duration(q.time) * time.Second)
 	<-timer.C
