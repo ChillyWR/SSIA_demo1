@@ -6,6 +6,7 @@ import (
 	"github.com/ChillyWR/SSIA_demo1/pkg"
 	"math/rand"
 	"os"
+	"sync"
 	"time"
 )
 
@@ -28,6 +29,7 @@ var (
 	InputFileName = "problems.json"
 	TimeForQuiz   = 30 // in seconds
 	Shuffle       = false
+	wg            = sync.WaitGroup{}
 )
 
 // CreateQuiz create and return Quiz object
@@ -77,24 +79,31 @@ func (q *Quiz) askQuestions() {
 			fmt.Println(err)
 			return
 		}
-		if pkg.CompareStrings(input, q.qa[i].Answer) {
-			q.correctAnswersAmount++
-		}
+		wg.Add(1)
+		q.checkAnswer(input, q.qa[i].Answer)
 	}
 	q.printResult()
+}
+
+func (q *Quiz) checkAnswer(input, answer string) {
+	if pkg.CompareStrings(input, answer) {
+		q.correctAnswersAmount++
+	}
+	wg.Done()
 }
 
 // Start timer
 // Preferred to run in different go routine
 // Shut down program when timer is up
-func (q Quiz) startTimer() {
+func (q *Quiz) startTimer() {
 	timer := time.NewTimer(time.Duration(q.time) * time.Second)
 	<-timer.C
-	fmt.Println("\nTime ended")
+	fmt.Println("\nTime is up")
 	q.printResult()
+	wg.Wait()
 	os.Exit(0)
 }
 
-func (q Quiz) printResult() {
-	fmt.Printf("You got %d correct answers\n", q.correctAnswersAmount)
+func (q *Quiz) printResult() {
+	fmt.Printf("You got %d correct answers out of %d\n", q.correctAnswersAmount, len(q.qa))
 }
