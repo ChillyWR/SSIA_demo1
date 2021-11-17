@@ -6,8 +6,18 @@ import (
 	"strconv"
 )
 
+const helpMessage = "Quiz program will ask questions one by one waiting for your reply\n" +
+	"If your answers is correct you will receive points that are displayed at the end of a quiz\n" +
+	"Be alert the timer will start counting down after you confirm the start of a quiz"
+const flagsMassage = "Available flags:\n" +
+	"-help: Print instructions\n" +
+	"-shuffle: Shuffle quiz questions\n" +
+	"--filename: Change default filename (specify new one as new command line argument)\n" +
+	"--timer: Change default time for timer to count down (specify new one as new command line argument)"
+
 var (
-	flags           = map[string]interface{}{
+	flags = map[string]interface{}{
+		"-help":    printHelpMessage,
 		"-shuffle": shuffleQuizQAs,
 	}
 	flagsWithArg = map[string]interface{}{
@@ -26,7 +36,7 @@ func ArgsHandler() {
 			valueWA.(func(string))(args[i+1])
 			i++
 		} else {
-			fmt.Println("Invalid flag format")
+			fmt.Println("Invalid flag format\n" + flagsMassage)
 			os.Exit(1)
 		}
 
@@ -48,4 +58,8 @@ func changeDefaultFilename(newFileName string) {
 }
 func shuffleQuizQAs() {
 	Shuffle = true
+}
+
+func printHelpMessage() {
+	fmt.Println(helpMessage + "\n" + flagsMassage)
 }
