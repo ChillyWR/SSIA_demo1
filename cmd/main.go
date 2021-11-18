@@ -1,12 +1,13 @@
 package main
 
 import (
-	"github.com/ChillyWR/SSIA_demo1/iternal"
+	"os"
+	"github.com/ChillyWR/SSIA_demo1/internal"
 )
 
 // TODO: cobra
 func main() {
-	iternal.ArgsHandler()
-	quiz := iternal.CreateQuiz()
+	internal.ArgsHandler(os.Args)
+	quiz := internal.CreateQuiz()
 	quiz.StartQuiz()
 }

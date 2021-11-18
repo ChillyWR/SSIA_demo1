@@ -1,4 +1,4 @@
-package iternal
+package internal
 
 import (
 	"fmt"
@@ -26,8 +26,7 @@ var (
 	}
 )
 
-func ArgsHandler() {
-	args := os.Args
+func ArgsHandler(args []string) {
 
 	// For debug
 	// fmt.Println(args)

@@ -1,4 +1,4 @@
-package iternal
+package internal
 
 import (
 	"bufio"
