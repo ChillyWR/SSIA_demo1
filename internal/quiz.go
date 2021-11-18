@@ -73,7 +73,7 @@ func (q *Quiz) askQuestions() {
 	fmt.Println("Quiz Started")
 	reader := bufio.NewReader(os.Stdin)
 	for i := 0; i < len(q.qa); i++ {
-		fmt.Printf("Question %d:\n%s", i + 1, q.qa[i].Question)
+		fmt.Printf("Question %d:\n%s\n", i + 1, q.qa[i].Question)
 		input, err := reader.ReadString('\n')
 		if err != nil {
 			fmt.Println(err)
